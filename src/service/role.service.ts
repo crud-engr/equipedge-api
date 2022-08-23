@@ -143,11 +143,11 @@ export class RoleService {
             await Role.findOneAndDelete(
                 { _id: roleId },
             ).exec();
-            return res.status(200).json({
+            return res.status(204).json({
                 status: 'success',
                 message: 'Role deleted successfully',
                 data: null,
-                code: 200,
+                code: 204,
             });
         } catch (error: any) {
           log.error(error.message)
