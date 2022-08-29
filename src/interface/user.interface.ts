@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 export interface IUser extends mongoose.Document {
+    activationToken: string;
     email: string;
     fullName: string;
     phone: string;
@@ -10,5 +11,7 @@ export interface IUser extends mongoose.Document {
     isVerified: boolean;
     createdAt: Date;
     updatedAt: Date;
-    comparePassword(candidatePassword: string): Promise<boolean>;
+    regeneratePassword(password: string): Promise<string>;
+    comparePassword(password: string): Promise<boolean>;
+    isAuthorized(role_name: string): Promise<boolean>;
 }

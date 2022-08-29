@@ -81,7 +81,6 @@ export class UserService {
                 return res.status(200).json({
                     status: 'success',
                     message: 'No available users',
-                    data: { users },
                     code: 200,
                 });
             }

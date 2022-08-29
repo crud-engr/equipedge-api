@@ -1,11 +1,11 @@
 import { Response, Request } from 'express';
 import log from '../../logger';
-import { UserService } from '../../service/admin/user-mgt.service';
+import { ProductService } from '../../service/admin/product-mgt.service';
 
-export class UserController {
-    async createUser(req: Request, res: Response) {
+export class ProductController {
+    async createProduct(req: Request, res: Response) {
         try {
-            return new UserService().createUser(req, res);
+            return new ProductService().createProduct(req, res);
         } catch (error: any) {
             log.error(error.message);
             return res.status(500).json({
@@ -17,9 +17,9 @@ export class UserController {
         }
     }
 
-    async findUsers(req: Request, res: Response) {
+    async findProducts(req: Request, res: Response) {
         try {
-            return new UserService().findUsers(req, res);
+            return new ProductService().findProducts(req, res);
         } catch (error: any) {
             log.error(error.message);
             return res.status(500).json({
@@ -31,23 +31,9 @@ export class UserController {
         }
     }
 
-    async findUser(req: Request, res: Response) {
+    async findProduct(req: Request, res: Response) {
         try {
-            return new UserService().findUser(req, res);
-        } catch (error: any) {
-           log.error(error.message);
-           return res.status(500).json({
-               status: 'error',
-               message: 'Error occured',
-               err: error.message,
-               code: 500,
-           });
-        }
-    }
-
-    async updateUser(req: Request, res: Response) {
-        try {
-            return new UserService().updateUser(req, res);
+            return new ProductService().findProduct(req, res);
         } catch (error: any) {
             log.error(error.message);
             return res.status(500).json({
@@ -59,9 +45,23 @@ export class UserController {
         }
     }
 
-    async deleteUser(req: Request, res: Response) {
+    async updateProduct(req: Request, res: Response) {
         try {
-            return new UserService().deleteUser(req, res);
+            return new ProductService().updateProduct(req, res);
+        } catch (error: any) {
+            log.error(error.message);
+            return res.status(500).json({
+                status: 'error',
+                message: 'Error occured',
+                err: error.message,
+                code: 500,
+            });
+        }
+    }
+
+    async deleteProduct(req: Request, res: Response) {
+        try {
+            return new ProductService().deleteProduct(req, res);
         } catch (error: any) {
             log.error(error.message);
             return res.status(500).json({
@@ -73,4 +73,3 @@ export class UserController {
         }
     }
 }
-

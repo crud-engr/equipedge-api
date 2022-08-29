@@ -47,6 +47,7 @@ export class ManufacturerService {
                 password,
                 role: role.name,
                 level: role.level,
+                isVerified: true
             });
             await manufacturer.save();
             // remove password from response
@@ -84,7 +85,6 @@ export class ManufacturerService {
                 return res.status(200).json({
                     status: 'success',
                     message: 'No manufacturers available',
-                    data: { manufacturers },
                     code: 200,
                 });
             }

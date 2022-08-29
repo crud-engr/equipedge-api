@@ -24,7 +24,8 @@ const limiter = rateLimit({
     max: 100,
     windowMs: 24 * 60 * 60 * 1000, // 24 hours
     message:
-        'We received too many requests from this IP. Please try again in 24hrs to this time',
+        '100 requests exceeded from this IP in 24 hours',
+    headers: true,
 });
 app.use('/api', limiter);
 app.use(helmet());

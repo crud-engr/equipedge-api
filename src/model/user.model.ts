@@ -1,8 +1,12 @@
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import config from 'config';
+import moment from 'moment';
+import crypto from 'crypto';
 
 import { IUser } from '../interface/user.interface';
+import Role from './role.model';
+import { IRole } from '../interface/role.interface';
 
 const UserSchema = new mongoose.Schema(
     {
@@ -23,15 +27,22 @@ const UserSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
-            select: false
+            select: false,
         },
         role: {
             type: String,
-            required: true,
+            default: 'user',
         },
         level: {
             type: Number,
-            required: true
+            default: 4,
+        },
+        activationToken: {
+            type: String,
+        },
+        notificationCounter: {
+            type: Number,
+            default: 0,
         },
         isVerified: {
             type: Boolean,
@@ -66,11 +77,27 @@ UserSchema.pre<IUser>('save', async function (next: any) {
     return next();
 });
 
-UserSchema.methods.comparePassword = async function (
-    candidatePassword: string,
-) {
+UserSchema.pre<IUser>('save', function (next) {
+    this.activationToken = crypto
+        .createHash('sha256')
+        .update(this.activationToken)
+        .digest('hex');
+    next();
+});
+
+UserSchema.methods.regeneratePassword = async function (password: string) {
+    this.password = password;
+    await this.save();
+};
+
+UserSchema.methods.comparePassword = async function (password: string) {
+    const user: any = this;
+    return await bcrypt.compare(password, user.password);
+};
+
+UserSchema.methods.isAuthorized = async function (role_name: string) {
     const user = this as IUser;
-    return await bcrypt.compare(candidatePassword, user.password);
+    return role_name === user.role ? true : false;
 };
 
 const User = mongoose.model<IUser>('User', UserSchema);

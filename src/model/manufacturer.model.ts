@@ -35,7 +35,7 @@ const ManufacturerSchema = new mongoose.Schema(
         },
         isVerified: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         isDeleted: {
             type: Boolean,
